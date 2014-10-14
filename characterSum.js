@@ -7,9 +7,9 @@ function charSum (str) {
     var sum = 0;
     for (var i=0; i < elems.length ; i++){
         var elem = elems[i];
-        var match = elem.match(/^[0-9]+$/);
-        if (match != null){
-            sum += parseInt(match[0]);
+        var digit = elem.match(/^[0-9]+$/);
+        if (digit != null){
+            sum += parseInt(digit[0]);
         }
     }
     console.log(sum);

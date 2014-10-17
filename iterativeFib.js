@@ -3,9 +3,7 @@
 
 function iterativeFib (n) {
 	var fibTerms = [];
-
 	for (var i=0; i < n; i++) {
-	
 		if (fibTerms.length === 0 || fibTerms.length === 1){
 			var term = 1;
 		}

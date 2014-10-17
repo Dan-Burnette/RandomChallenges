@@ -5,7 +5,8 @@
 
 function highestFreq(str) {
 	dictionary = {}
-	//Build a dictionary of form {letter : count}
+	var maxCount = 1;
+	//Build a dictionary of form {letter : count} and also find the max times a letter appears
 	for (var i=0; i < str.length; i++){
 		var elem = str[i];
 		if (dictionary[elem] == undefined){
@@ -13,15 +14,9 @@ function highestFreq(str) {
 		}
 		else {
 			dictionary[elem] +=1;
-		}
-	}
-
-	//Get the max count
-	var maxCount = 0;
-	for (var letter in dictionary){
-		var letterCount = dictionary[letter];
-		if (letterCount > maxCount){
-			maxCount = letterCount;
+			if (dictionary[elem] > maxCount){
+			  maxCount = dictionary[elem];
+			}
 		}
 	}
 

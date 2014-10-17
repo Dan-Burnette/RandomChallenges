@@ -5,6 +5,7 @@
 
 function highestFreq(str) {
 	dictionary = {}
+	//Build a dictionary of form {letter : count}
 	for (var i=0; i < str.length; i++){
 		var elem = str[i];
 		if (dictionary[elem] == undefined){
@@ -24,6 +25,7 @@ function highestFreq(str) {
 		}
 	}
 
+	//Find all letters that appear maxCount times
 	var highestFreqLetters= [];
 	for (var letter in dictionary){
 		if (dictionary[letter] == maxCount){
@@ -31,6 +33,7 @@ function highestFreq(str) {
 		}
 	}
 
+	//Sort alphabetically and convert into string output format
 	var sorted = highestFreqLetters.sort();
 	var stringAnswer= "";	
 	for (var i=0; i < sorted.length; i++){

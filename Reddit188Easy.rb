@@ -1,5 +1,4 @@
 lines =  File.open('188_input.txt', "r").readlines
-
 months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 lines.each do |l|
   l.delete! "\n"
@@ -22,7 +21,7 @@ lines.each do |l|
     reformated = "#{century}" + "#{year}" + '-' + "#{parts[1]}" + '-' + "#{parts[0]}"
   else 
     parts = l.split
-    month = months.find_index(parts[0]).to_i
+    month = months.find_index(parts[0]).to_i + 1
     month = month < 10 ? "0" + month.to_s : month
     year = parts[-1]
     if parts[-1].length == 2

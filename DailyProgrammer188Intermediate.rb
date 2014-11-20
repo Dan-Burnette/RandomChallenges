@@ -30,10 +30,6 @@ iqr = q3.to_i-q1.to_i
 
 upper_anomalies = find_anomalies(arr, q3.to_i, iqr, "upper")
 lower_anomalies = find_anomalies(arr, q1.to_i, iqr, "lower")
-puts "UPPER AND LOWER anomalies"
-puts upper_anomalies.inspect
-puts lower_anomalies.inspect
-
 
 #Drawing the box plot
 t4_str = ""   # 7         9
@@ -41,40 +37,24 @@ t3_str = ""   # |         |
 t2_str = ""   # ------------ and so on...
 t1_str = ""   # |         |
 
-# arr.each_with_index do |x,i|
-#   #Marking each quantile
-#   if i == arr.find_index(q1) || i == arr.find_index(q2) || i == arr.find_index(q3)
-#     trim_amt = x.to_s.length 
-#     #Make it line up properly
-#     if (t4_str.length > trim_amt)
-#       t4_str = t4_str[0..-trim_amt]
-#     end
-#     t4_str += x
-#     t3_str += "|"
-#     t2_str += "-"
-#     t1_str += "|"
-#   #Else if anomaly mark with an X
-#   elsif upper_anomalies.include?(x) || lower_anomalies.include?(x)
-#     t2_str += "X"
-#   #Else just a normal piece of data
-#   else
-#     t4_str += " "
-#     t3_str += " "
-#     t2_str += "-"
-#     t1_str += " "
-#   end
-# end
-
-#Correct way
-
 start = arr[0].to_i
 finish  = arr[-1].to_i
 plot_range = (start..finish)
+#If we've hit the first and last outliers yet
+first_found = false
+last_found = false
 
-plot_range.each do |x|
+plot_range.each_with_index do |x,i|
+
+  if (lower_anomalies.include?(x.to_s) == false && arr.include?(x.to_s))
+    first_found = true
+  elsif (upper_anomalies.include?(x.to_s))
+    last_found = true
+  end
+
   #Marking each quantile
-  if x == q1.to_i || x == q2.to_i || x == q3.to_i
-     trim_amt = x.to_s.length 
+  if x == q1.to_i || x == q2.to_i || x == q3.to_i  
+     trim_amt = x.to_s.length()
     #Make it line up properly
     if (t4_str.length > trim_amt)
       t4_str = t4_str[0..-trim_amt]
@@ -85,15 +65,25 @@ plot_range.each do |x|
     t1_str += "|"
   #Else if anomaly mark with an X
   elsif upper_anomalies.include?(x.to_s) || lower_anomalies.include?(x.to_s)
+    trim_amt = x.to_s.length()
+    #Make it line up properly
+    if (t4_str.length > trim_amt)
+      t4_str = t4_str[0..-trim_amt]
+    end
+    t4_str += x.to_s
     t2_str += "X"
+
   #Else just a normal piece of the range
   else
-    t4_str += " "
-    t3_str += " "
-    t2_str += "-"
-    t1_str += " "
+    if (last_found)
+      #do nothing
+    elsif first_found
+      t4_str += " "
+      t3_str += " "
+      t2_str += "-"
+      t1_str += " "
+    end
   end
-
 end
 
 puts t4_str

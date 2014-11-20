@@ -5,10 +5,6 @@
 #type is "upper" or "lower"
 def find_anomalies(data, quantile, iqr, type)
   anomalies = []
-  puts quantile
-  puts "IQR IS ---"
-  puts iqr
-
   data.each do |x|
     if type == "upper"
      is_anomalous = x.to_i > quantile + 1.5 * iqr ? true : false
@@ -37,7 +33,7 @@ lower_anomalies = find_anomalies(arr, q1.to_i, iqr, "lower")
 puts "UPPER AND LOWER anomalies"
 puts upper_anomalies.inspect
 puts lower_anomalies.inspect
-puts lower_anomalies.length
+
 
 #Drawing the box plot
 t4_str = ""   # 7         9
@@ -45,28 +41,59 @@ t3_str = ""   # |         |
 t2_str = ""   # ------------ and so on...
 t1_str = ""   # |         |
 
-arr.each_with_index do |x,i|
+# arr.each_with_index do |x,i|
+#   #Marking each quantile
+#   if i == arr.find_index(q1) || i == arr.find_index(q2) || i == arr.find_index(q3)
+#     trim_amt = x.to_s.length 
+#     #Make it line up properly
+#     if (t4_str.length > trim_amt)
+#       t4_str = t4_str[0..-trim_amt]
+#     end
+#     t4_str += x
+#     t3_str += "|"
+#     t2_str += "-"
+#     t1_str += "|"
+#   #Else if anomaly mark with an X
+#   elsif upper_anomalies.include?(x) || lower_anomalies.include?(x)
+#     t2_str += "X"
+#   #Else just a normal piece of data
+#   else
+#     t4_str += " "
+#     t3_str += " "
+#     t2_str += "-"
+#     t1_str += " "
+#   end
+# end
+
+#Correct way
+
+start = arr[0].to_i
+finish  = arr[-1].to_i
+plot_range = (start..finish)
+
+plot_range.each do |x|
   #Marking each quantile
-  if i == arr.find_index(q1) || i == arr.find_index(q2) || i == arr.find_index(q3)
-    trim_amt = x.to_s.length 
+  if x == q1.to_i || x == q2.to_i || x == q3.to_i
+     trim_amt = x.to_s.length 
     #Make it line up properly
     if (t4_str.length > trim_amt)
       t4_str = t4_str[0..-trim_amt]
     end
-    t4_str += x
+    t4_str += x.to_s
     t3_str += "|"
     t2_str += "-"
     t1_str += "|"
   #Else if anomaly mark with an X
-  elsif upper_anomalies.include?(x) || lower_anomalies.include?(x)
+  elsif upper_anomalies.include?(x.to_s) || lower_anomalies.include?(x.to_s)
     t2_str += "X"
-  #Else just a normal piece of data
+  #Else just a normal piece of the range
   else
     t4_str += " "
     t3_str += " "
     t2_str += "-"
     t1_str += " "
   end
+
 end
 
 puts t4_str

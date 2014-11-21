@@ -43,16 +43,17 @@ plot_range = (start..finish)
 #If we've hit the first and last outliers yet
 first_found = false
 last_found = false
+between_q1_q3 = false
 
 plot_range.each_with_index do |x,i|
-  term_index = arr.find_index(x.to_s)
 
+  term_index = arr.find_index(x.to_s)
   if (term_index != nil && upper_anomalies.include?(arr[term_index+1]))
     if last_found == false
       last_term = x
     end
     last_found = true
-  elsif (lower_anomalies.include?(x.to_s) == false && arr.include?(x.to_s))
+  elsif (!lower_anomalies.include?(x.to_s) && arr.include?(x.to_s))
     if first_found == false
       first_term  = x
     end
@@ -60,7 +61,7 @@ plot_range.each_with_index do |x,i|
     puts "first_found true at #{x}"
   end
 
-  #Marking each quantile
+  #Marking each quantile and first/last terms
   if x == q1.to_i || x == q2.to_i || x == q3.to_i  || x == first_term || x == last_term
      trim_amt = x.to_s.length()
     #Make it line up properly
@@ -71,6 +72,13 @@ plot_range.each_with_index do |x,i|
     t3_str += "|"
     t2_str += "-"
     t1_str += "|"
+
+    if (x == q1.to_i)
+      between_q1_q3 = true
+    elsif x == q3.to_i
+      between_q1_q3 = false
+    end
+
   #Else if anomaly mark with an X
   elsif upper_anomalies.include?(x.to_s) || lower_anomalies.include?(x.to_s)
     trim_amt = x.to_s.length()
@@ -81,16 +89,22 @@ plot_range.each_with_index do |x,i|
     t4_str += x.to_s
     t2_str += "X"
 
-  #Else just a normal piece of the range
   else
     if last_found
       t2_str += " "
     elsif first_found
       t2_str += "-"
     end
-      t4_str += " "
+
+    #For drawing box lines
+    if between_q1_q3
+      t3_str += "-"
+      t1_str += "-"
+    else
       t3_str += " "
       t1_str += " "
+    end
+    t4_str += " "
   end
 end
 

@@ -45,15 +45,23 @@ first_found = false
 last_found = false
 
 plot_range.each_with_index do |x,i|
+  term_index = arr.find_index(x.to_s)
 
-  if (lower_anomalies.include?(x.to_s) == false && arr.include?(x.to_s))
-    first_found = true
-  elsif (upper_anomalies.include?(x.to_s))
+  if (term_index != nil && upper_anomalies.include?(arr[term_index+1]))
+    if last_found == false
+      last_term = x
+    end
     last_found = true
+  elsif (lower_anomalies.include?(x.to_s) == false && arr.include?(x.to_s))
+    if first_found == false
+      first_term  = x
+    end
+    first_found = true
+    puts "first_found true at #{x}"
   end
 
   #Marking each quantile
-  if x == q1.to_i || x == q2.to_i || x == q3.to_i  
+  if x == q1.to_i || x == q2.to_i || x == q3.to_i  || x == first_term || x == last_term
      trim_amt = x.to_s.length()
     #Make it line up properly
     if (t4_str.length > trim_amt)
@@ -75,14 +83,14 @@ plot_range.each_with_index do |x,i|
 
   #Else just a normal piece of the range
   else
-    if (last_found)
-      #do nothing
+    if last_found
+      t2_str += " "
     elsif first_found
+      t2_str += "-"
+    end
       t4_str += " "
       t3_str += " "
-      t2_str += "-"
       t1_str += " "
-    end
   end
 end
 

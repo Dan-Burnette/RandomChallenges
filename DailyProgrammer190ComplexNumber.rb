@@ -7,15 +7,15 @@ class ComplexNumber
   end
 
   def modulus
-
+    Math.hypot(@real, @imaginary)
   end
 
   def conjugate
-
+    ComplexNumber.new({real: real, imaginary: -imaginary})
   end
 
   def to_s
-    "#{@real} #{@imaginary}"
+    "#{@real}#{@imaginary}i"
   end
 
 end
@@ -42,6 +42,3 @@ def multiply_complex(a,b)
  imaginary = outter + inner
  ComplexNumber.new({real: real, imaginary: imaginary})
 end
-
-a = ComplexNumber.new({:real => 1, :imaginary => 3})
-b = ComplexNumber.new({:real => 3, :imaginary => -2})
